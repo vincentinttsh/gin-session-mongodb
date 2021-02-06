@@ -15,16 +15,18 @@ type Store interface {
 	sessions.Store
 }
 
-var cfg = mongodbstore.MongoDBStoreConfig{
-	IndexTTL:       true,
-	SessionOptions: gsessions.Options{},
-}
+var cfg = mongodbstore.MongoDBStoreConfig{}
 
 // NewStore 連接 mongodb
-func NewStore(c *mongo.Collection, k []byte) Store {
+func NewStore(c *mongo.Collection, maxAge int, ensureTTL bool, k []byte) Store {
 	collection = c
 	keyPairs = k
+	cfg.IndexTTL = ensureTTL
+	cfg.SessionOptions = gsessions.Options{
+		MaxAge: maxAge,
+	}
 	s, err := mongodbstore.NewMongoDBStoreWithConfig(collection, cfg, keyPairs)
+
 	if err != nil {
 		panic(err)
 	}
