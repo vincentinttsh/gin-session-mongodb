@@ -17,7 +17,7 @@ import (
 var newStore = func(_ *testing.T) sessions.Store {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	uri := fmt.Sprintf("mongodb+srv://%s:%s", os.Getenv("DBUSER"), os.Getenv("DBPASS"))
+	uri := fmt.Sprintf("mongodb://%s:%s", os.Getenv("DBUSER"), os.Getenv("DBPASS"))
 	uri += fmt.Sprintf("@%s/", os.Getenv("HOST"))
 	uri += "retryWrites=true&w=majority"
 	connect := options.Client().ApplyURI(uri)
