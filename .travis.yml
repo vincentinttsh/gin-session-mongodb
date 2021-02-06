@@ -1,8 +1,14 @@
+dist: bionic
+
+services: mongodb
+
+before_script:
+  - cp .env.example .env
+
 language: go
 
 go:
   - 1.15
-  - master
 
 script:
   - go build

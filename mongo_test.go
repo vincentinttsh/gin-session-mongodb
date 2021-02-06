@@ -2,7 +2,6 @@ package ginsessionmongodb
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"testing"
 	"time"
@@ -17,16 +16,13 @@ import (
 var newStore = func(_ *testing.T) sessions.Store {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	uri := fmt.Sprintf("mongodb+srv://%s:%s", os.Getenv("DBUSER"), os.Getenv("DBPASS"))
-	uri += fmt.Sprintf("@%s/", os.Getenv("HOST"))
-	uri += "retryWrites=true&w=majority"
-	connect := options.Client().ApplyURI(uri)
+	connect := options.Client().ApplyURI(os.Getenv("URI"))
 	client, err := mongo.Connect(ctx, connect)
 	if err != nil {
 		panic(err)
 	}
 	coll := client.Database("test").Collection("sessions")
-	return NewStore(coll, []byte("secret"))
+	return NewStore(coll, 3600, true, []byte("secret"))
 }
 
 func TestMongo_SessionGetSet(t *testing.T) {
