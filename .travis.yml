@@ -4,8 +4,6 @@ services: mongodb
 
 before_script:
   - cp .env.example .env
-  - mongo test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
-  - sleep 15
 
 language: go
 
