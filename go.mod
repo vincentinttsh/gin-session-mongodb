@@ -1,4 +1,4 @@
-module gin-session-mongodb
+module github.com/vincentinttsh/gin-session-mongodb
 
 go 1.15
 
